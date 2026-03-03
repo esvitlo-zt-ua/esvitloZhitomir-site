@@ -1,0 +1,226 @@
+/* Загальні стилі */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+  background: linear-gradient(to bottom right, #ffffff, #e6f2ff);
+  position: relative;
+}
+
+/* Заголовки */
+h1, h2 {
+  text-align: left;
+  margin: 0;
+}
+
+h1 {
+  font-size: 28px;
+  color: #333;
+}
+
+h2 {
+  font-size: 22px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+/* Інформаційний блок */
+.info-box {
+  margin-bottom: 20px;
+}
+
+.alert-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #d9534f;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.alert-content {
+  background-color: #fff3cd;
+  border: 2px solid #ffecb5;
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 15px;
+  text-align: left;
+  width: 700px;
+  margin-left: 0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+#dateSelect {
+  margin-top: 8px;
+  padding: 6px 12px;
+  font-size: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+/* Легенда */
+.legend {
+  margin: 15px 0;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Обгортка таблиці */
+#tableWrapper {
+  position: relative;
+  overflow-x: auto;
+}
+
+/* Індикатор поточного часу */
+#clockIndicator {
+  position: absolute;
+  width: 2px;
+  background-color: #ff6600;
+  top: 0;
+  z-index: 10;
+  pointer-events: none;
+  display: none;
+}
+
+/* Таблиця */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  min-width: 800px;
+}
+
+th, td {
+  border: 1px solid #ccc;
+  text-align: center;
+  padding: 4px;
+  font-size: 12px;
+}
+
+th {
+  background-color: #f7f7f7;
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.queue-name {
+  font-weight: bold;
+  background-color: #f0f0f0;
+  white-space: nowrap;
+}
+
+/* Статуси клітинок */
+.on {
+  background-color: #cc2525;
+}
+.off-full {
+  background-color: #39a355;
+}
+.on-left {
+  background: linear-gradient(to right, #cc2525 50%, #39a355 50%);
+}
+.on-right {
+  background: linear-gradient(to right, #39a355 50%, #cc2525 50%);
+}
+
+/* Підсвічування поточної години */
+.current-hour {
+  outline: 3px solid #ffc107;
+  outline-offset: -2px;
+  z-index: 5;
+  position: relative;
+}
+
+/* Підказки при наведенні */
+.on[title],
+.off-full[title],
+.on-left[title],
+.on-right[title] {
+  cursor: help;
+}
+
+/* Статус "очікую" */
+.waiting {
+  background-color: #d3d3d3;
+  color: #666;
+  font-size: 10px;
+  font-style: italic;
+}
+
+/* Соцмережі */
+.social-links {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: #f2f2f2;
+  padding: 10px 15px;
+  border-radius: 8px;
+  font-weight: bold;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  z-index: 1000;
+}
+
+.social-links p {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.social-links a {
+  text-decoration: none;
+  font-weight: bold;
+  padding: 6px 12px;
+  border-radius: 5px;
+  color: white;
+  background-color: #0088cc;
+  display: inline-block;
+}
+
+.social-links a.telegram {
+  background-color: #0088cc;
+}
+
+/* Повідомлення про недоступність */
+.no-data-message {
+  text-align: center;
+  padding: 40px 20px;
+  font-size: 16px;
+  color: #888;
+  background: rgba(255,255,255,0.8);
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+/* Адаптивність */
+@media (max-width: 768px) {
+  .alert-content {
+    width: 100%;
+  }
+
+  table {
+    font-size: 10px;
+    min-width: 600px;
+  }
+
+  th, td {
+    padding: 3px 2px;
+    font-size: 10px;
+  }
+
+  h1 {
+    font-size: 22px;
+  }
+
+  h2 {
+    font-size: 18px;
+  }
+
+  .social-links {
+    position: static;
+    margin-bottom: 20px;
+  }
+}

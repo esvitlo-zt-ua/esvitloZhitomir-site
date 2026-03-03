@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="https://public-frontend-cos.metadl.com/mgx/img/favicon_atoms.ico" type="image/x-icon">
+  <title>ГПВ Житомирщини</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <!-- Соцмережі -->
+  <div class="social-links">
+    <p>Слідкуйте за оновленнями:</p>
+    <a href="https://t.me/esvitlo_zhitomir_ua" target="_blank" class="telegram">Telegram</a>
+  </div>
+
+  <!-- Заголовки -->
+  <h1>Повний графік погодинних відключень</h1>
+  <h2>Житомирщини</h2>
+
+  <!-- Інформаційний блок -->
+  <div class="info-box">
+    <div class="alert-title">‼️ УВАГА! ВАЖЛИВА ІНФОРМАЦІЯ ‼️</div>
+    <div class="alert-content" id="alertContent">
+      На <b id="alertDate">15:30 03.03.2026</b> НЕК <b>«Укренерго»</b> змінив застосування кількості черг: <br><br>
+      🕙 <b>16:00–18:00</b> — 1,5 черги<br>
+      🕙 <b>18:00–20:00</b> — 1,0 черги<br>
+      🕙 <b>20:00–24:00</b> — 0,5 черги<br><br>
+      📌 Протягом усього дня можливі зміни ГПВ та запровадження ГАВ.
+    </div>
+
+    <p>Оберіть дату, щоб переглянути графік відключень:</p>
+    <select id="dateSelect"></select>
+  </div>
+
+  <!-- Легенда -->
+  <div class="legend">
+    🟢 Світло є &nbsp;&nbsp; 🔴 Світла немає
+  </div>
+
+  <!-- Таблиця з індикатором -->
+  <div id="tableWrapper">
+    <div id="clockIndicator"></div>
+    <div id="tableContainer"></div>
+  </div>
+
+  <script type="module" src="./script.js"></script>
+</body>
+</html>

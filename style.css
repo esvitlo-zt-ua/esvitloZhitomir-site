@@ -224,3 +224,8 @@ th {
     margin-bottom: 20px;
   }
 }
+
+#alertDate {
+  font-weight: bold;
+  color: #222;
+}

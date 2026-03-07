@@ -12,7 +12,7 @@ const schedulesToday = {
   "5.2": [""],
   "6.1": [""], 
   "6.2": [""]
-          };
+};
 
 const schedulesTomorrow = {
   "1.1": ["20:00-22:00"], 

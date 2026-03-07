@@ -1,45 +1,30 @@
-// Розклад на сьогодні
+// --- Розклади ---
 const schedulesToday = {
-  "1.1": ["18:00-21:00"],
-  "1.2": ["18:00-21:00"],
-  "2.1": ["18:00-21:00"],
-  "2.2": ["18:00-21:00"],
-  "3.1": [""],
-  "3.2": [""],
-  "4.1": [""],
-  "4.2": [""],
-  "5.1": [""],
-  "5.2": [""],
-  "6.1": [""],
-  "6.2": [""]
+  "1.1": ["18:00-21:00"], "1.2": ["18:00-21:00"],
+  "2.1": ["18:00-21:00"], "2.2": ["18:00-21:00"],
+  "3.1": [""], "3.2": [""],
+  "4.1": [""], "4.2": [""],
+  "5.1": [""], "5.2": [""],
+  "6.1": [""], "6.2": [""]
 };
 
-// Розклад на завтра
 const schedulesTomorrow = {
-  "1.1": ["очікую"],
-  "1.2": ["очікую"],
-  "2.1": ["очікую"],
-  "2.2": ["очікую"],
-  "3.1": ["очікую"],
-  "3.2": ["очікую"],
-  "4.1": ["очікую"],
-  "4.2": ["очікую"],
-  "5.1": ["очікую"],
-  "5.2": ["очікую"],
-  "6.1": ["очікую"],
-  "6.2": ["очікую"]
+  "1.1": ["очікую"], "1.2": ["очікую"],
+  "2.1": ["очікую"], "2.2": ["очікую"],
+  "3.1": ["очікую"], "3.2": ["очікую"],
+  "4.1": ["очікую"], "4.2": ["очікую"],
+  "5.1": ["очікую"], "5.2": ["очікую"],
+  "6.1": ["очікую"], "6.2": ["очікую"]
 };
 
-// Перетворення часу у хвилини
+// --- Допоміжні ---
 function timeToMinutes(time) {
   if (!time || typeof time !== "string" || !time.includes(":")) return 0;
   if (time.trim() === "24:00") return 1440;
   const [h, m] = time.split(":").map(Number);
-  if (isNaN(h) || isNaN(m)) return 0;
   return h * 60 + m;
 }
 
-// Статус клітинки
 function getCellStatus(hourStart, ranges) {
   const hourEnd = hourStart + 60;
   let totalOverlap = 0;
@@ -58,9 +43,7 @@ function getCellStatus(hourStart, ranges) {
 
     if (overlapEnd > overlapStart) {
       totalOverlap += overlapEnd - overlapStart;
-      if (firstOverlapStart === null) {
-        firstOverlapStart = overlapStart;
-      }
+      if (firstOverlapStart === null) firstOverlapStart = overlapStart;
     }
   }
 
@@ -73,12 +56,11 @@ function getCellStatus(hourStart, ranges) {
   return "off-full";
 }
 
-// Перевірка чи черга має лише "очікую"
 function isWaitingQueue(ranges) {
   return ranges.length === 1 && ranges[0] === "очікую";
 }
 
-// Генерація таблиці
+// --- Генерація таблиці ---
 function generateTable(scheduleData) {
   const container = document.getElementById("tableContainer");
   if (!container) return;
@@ -86,8 +68,9 @@ function generateTable(scheduleData) {
   container.innerHTML = "";
   const table = document.createElement("table");
 
-  // Заголовок
+  // Заголовок у один рядок, але кожна клітинка має два рядки тексту
   const headerRow = document.createElement("tr");
+
   const firstHeader = document.createElement("th");
   firstHeader.textContent = "Черга";
   headerRow.appendChild(firstHeader);
@@ -95,13 +78,15 @@ function generateTable(scheduleData) {
   for (let hour = 0; hour < 24; hour++) {
     const start = String(hour).padStart(2, "0") + ":00";
     const end = (hour === 23) ? "24:00" : String(hour + 1).padStart(2, "0") + ":00";
+
     const th = document.createElement("th");
-    th.textContent = `${start}-${end}`;
+    th.innerHTML = `${start}<br>${end}`; // два рядки в одній клітинці
     headerRow.appendChild(th);
   }
+
   table.appendChild(headerRow);
 
-  // Рядки
+  // Рядки з даними
   const queueKeys = Object.keys(scheduleData);
   queueKeys.forEach(queue => {
     const row = document.createElement("tr");
@@ -126,7 +111,6 @@ function generateTable(scheduleData) {
         const status = getCellStatus(hourStart, ranges);
         cell.className = status;
 
-        // Додаємо tooltip
         if (status === "on" || status === "on-left" || status === "on-right") {
           cell.title = `Черга ${queue}: відключення`;
         } else {
@@ -143,7 +127,7 @@ function generateTable(scheduleData) {
   container.appendChild(table);
 }
 
-// Отримання рядка дати у форматі YYYY-MM-DD
+// --- Дати ---
 function getDateStr(date) {
   const y = date.getFullYear();
   const m = String(date.getMonth() + 1).padStart(2, "0");
@@ -151,7 +135,6 @@ function getDateStr(date) {
   return `${y}-${m}-${d}`;
 }
 
-// Заповнення списку дат
 function fillDates() {
   const select = document.getElementById("dateSelect");
   if (!select) return;
@@ -171,19 +154,12 @@ function fillDates() {
   tomorrowOption.textContent = "Завтра (" + tomorrow.toLocaleDateString("uk-UA") + ")";
   select.appendChild(tomorrowOption);
 
-  // Додаткові дати (виключаючи сьогодні та завтра)
   const extraDates = [];
-  for (let d = 22; d <= 28; d++) {
-    extraDates.push(`2026-02-${String(d).padStart(2, "0")}`);
-  }
-  for (let d = 1; d <= 31; d++) {
-    extraDates.push(`2026-03-${String(d).padStart(2, "0")}`);
-  }
+  for (let d = 22; d <= 28; d++) extraDates.push(`2026-02-${String(d).padStart(2, "0")}`);
+  for (let d = 1; d <= 31; d++) extraDates.push(`2026-03-${String(d).padStart(2, "0")}`);
 
   extraDates.forEach(dateStr => {
-    // Не дублювати сьогодні та завтра
     if (dateStr === todayStr || dateStr === tomorrowStr) return;
-
     const option = document.createElement("option");
     option.value = dateStr;
     option.textContent = dateStr.split("-").reverse().join(".");
@@ -191,7 +167,47 @@ function fillDates() {
   });
 }
 
-// Оновлення лінії індикатора поточного часу
+// --- Дати ---
+function getDateStr(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
+
+function fillDates() {
+  const select = document.getElementById("dateSelect");
+  if (!select) return;
+
+  const today = new Date();
+  const todayStr = getDateStr(today);
+  const todayOption = document.createElement("option");
+  todayOption.value = todayStr;
+  todayOption.textContent = "Сьогодні (" + today.toLocaleDateString("uk-UA") + ")";
+  select.appendChild(todayOption);
+
+  const tomorrow = new Date(today);
+  tomorrow.setDate(today.getDate() + 1);
+  const tomorrowStr = getDateStr(tomorrow);
+  const tomorrowOption = document.createElement("option");
+  tomorrowOption.value = tomorrowStr;
+  tomorrowOption.textContent = "Завтра (" + tomorrow.toLocaleDateString("uk-UA") + ")";
+  select.appendChild(tomorrowOption);
+
+  const extraDates = [];
+  for (let d = 22; d <= 28; d++) extraDates.push(`2026-02-${String(d).padStart(2, "0")}`);
+  for (let d = 1; d <= 31; d++) extraDates.push(`2026-03-${String(d).padStart(2, "0")}`);
+
+  extraDates.forEach(dateStr => {
+    if (dateStr === todayStr || dateStr === tomorrowStr) return;
+    const option = document.createElement("option");
+    option.value = dateStr;
+    option.textContent = dateStr.split("-").reverse().join(".");
+    select.appendChild(option);
+  });
+}
+
+// --- Індикатор часу ---
 function updateClockIndicator(isToday) {
   const indicator = document.getElementById("clockIndicator");
   if (!indicator) return;
@@ -217,7 +233,6 @@ function updateClockIndicator(isToday) {
   const hour = now.getHours();
   const minutes = now.getMinutes();
 
-  // Перша клітинка даних (індекс 1 — перша година)
   const firstDataCell = headerCells[1];
   const cellWidth = firstDataCell.offsetWidth;
   const tableLeft = firstDataCell.offsetLeft;
@@ -229,12 +244,11 @@ function updateClockIndicator(isToday) {
   indicator.style.display = "block";
 }
 
-// Підсвічування поточної години (тільки для сьогодні)
+// --- Підсвічування години ---
 function highlightCurrentHour(isToday) {
   const table = document.querySelector("table");
   if (!table) return;
 
-  // Прибираємо попереднє підсвічування
   table.querySelectorAll("td").forEach(td => td.classList.remove("current-hour"));
   table.querySelectorAll("th").forEach(th => th.classList.remove("current-hour"));
 
@@ -245,35 +259,29 @@ function highlightCurrentHour(isToday) {
 
   const rows = table.querySelectorAll("tr");
   rows.forEach((row, idx) => {
-    if (idx === 0) {
-      // Підсвічуємо заголовок
+    if (idx === 0 || idx === 1) {
       const ths = row.querySelectorAll("th");
-      if (ths.length > hour + 1) {
-        ths[hour + 1].classList.add("current-hour");
-      }
+      if (ths.length > hour + 1) ths[hour + 1].classList.add("current-hour");
     } else {
       const cells = row.querySelectorAll("td");
-      if (cells.length > hour + 1) {
-        cells[hour + 1].classList.add("current-hour");
-      }
+      if (cells.length > hour + 1) cells[hour + 1].classList.add("current-hour");
     }
   });
 }
 
-// Визначення чи обрана дата — сьогодні
+// --- Визначення чи обрана дата — сьогодні/завтра ---
 function isSelectedDateToday(selectedValue) {
   const today = new Date();
   return selectedValue === getDateStr(today);
 }
 
-// Визначення чи обрана дата — завтра
 function isSelectedDateTomorrow(selectedValue) {
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
   return selectedValue === getDateStr(tomorrow);
 }
 
-// Оновлення відображення
+// --- Оновлення відображення ---
 function updateDisplay(selectedValue) {
   const isToday = isSelectedDateToday(selectedValue);
   const isTomorrow = isSelectedDateTomorrow(selectedValue);
@@ -304,7 +312,24 @@ function updateDisplay(selectedValue) {
   highlightCurrentHour(isToday);
 }
 
-// Запуск після завантаження сторінки
+// --- Живий годинник біля alertDate ---
+function updateAlertDateTime() {
+  const alertDate = document.getElementById("alertDate");
+  if (!alertDate) return;
+
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  alertDate.textContent = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+}
+
+// --- Запуск після завантаження сторінки ---
 document.addEventListener("DOMContentLoaded", () => {
   fillDates();
 
@@ -319,35 +344,15 @@ document.addEventListener("DOMContentLoaded", () => {
     updateDisplay(e.target.value);
   });
 
-  // Оновлення щохвилини
+  // Оновлення індикатора та підсвічування щохвилини
   setInterval(() => {
     if (select) {
       updateClockIndicator(isSelectedDateToday(select.value));
       highlightCurrentHour(isSelectedDateToday(select.value));
     }
   }, 60000);
-}); 
 
-// Оновлення дати та часу біля alertDate
-function updateAlertDateTime() {
-  const alertDate = document.getElementById("alertDate");
-  if (!alertDate) return;
-
-  const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const year = now.getFullYear();
-
-  const hours = String(now.getHours()).padStart(2, '0');
-  const minutes = String(now.getMinutes()).padStart(2, '0');
-  const seconds = String(now.getSeconds()).padStart(2, '0');
-
-  // Формат: DD.MM.YYYY HH:MM:SS
-  alertDate.textContent = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
-}
-
-// Запуск після завантаження сторінки
-document.addEventListener("DOMContentLoaded", () => {
+  // Оновлення живого годинника щосекунди
   updateAlertDateTime();
-  setInterval(updateAlertDateTime, 1000); // оновлювати щосекунди
+  setInterval(updateAlertDateTime, 1000);
 });

@@ -326,4 +326,28 @@ document.addEventListener("DOMContentLoaded", () => {
       highlightCurrentHour(isSelectedDateToday(select.value));
     }
   }, 60000);
+}); 
+
+// Оновлення дати та часу біля alertDate
+function updateAlertDateTime() {
+  const alertDate = document.getElementById("alertDate");
+  if (!alertDate) return;
+
+  const now = new Date();
+  const day = String(now.getDate()).padStart(2, '0');
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const year = now.getFullYear();
+
+  const hours = String(now.getHours()).padStart(2, '0');
+  const minutes = String(now.getMinutes()).padStart(2, '0');
+  const seconds = String(now.getSeconds()).padStart(2, '0');
+
+  // Формат: DD.MM.YYYY HH:MM:SS
+  alertDate.textContent = `${day}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+}
+
+// Запуск після завантаження сторінки
+document.addEventListener("DOMContentLoaded", () => {
+  updateAlertDateTime();
+  setInterval(updateAlertDateTime, 1000); // оновлювати щосекунди
 });
